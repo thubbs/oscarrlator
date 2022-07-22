@@ -1,0 +1,239 @@
+<html>
+	<head>
+		<title>haha oscillator go bzzt</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.js"></script>
+		<script>
+
+			var freq1 = 440;
+			var freq2 = 440;
+			var freq3 = 440;
+			var freq4 = 440;
+			var freq5 = 440;
+			var freq6 = 440;
+			var freq7 = 440;
+			var freq8 = 440;
+			var freq9 = 440;
+			var freq10 = 440;
+			var freq11 = 440;
+			var freq12 = 440;
+
+			var isOn = false;
+			
+			function change1(val){
+				osc1.frequency = val;
+				document.getElementById("curval").innerHTML = val;
+			}
+			function change2(val){
+				osc2.frequency = val;
+				document.getElementById("curval").innerHTML = val;
+			}
+			function change3(val){
+				osc3.frequency = val;
+				document.getElementById("curval").innerHTML = val;
+			}
+			function change4(val){
+				osc4.frequency = val;
+				document.getElementById("curval").innerHTML = val;
+			}
+			function change5(val){
+				osc5.frequency = val;
+				document.getElementById("curval").innerHTML = val;
+			}
+			function change6(val){
+				osc6.frequency = val;
+				document.getElementById("curval").innerHTML = val;
+			}
+			/*
+			function changefreq(id, val){
+				console.log(id, val)
+				oscnum = "osc" + id;
+				//console.log(oscnum)
+				oscnum.frequency = val;
+				document.getElementById("curval").innerHTML = val;
+			}
+			*/
+			function changerow1vol(val){
+				val = val/100
+				group1.volume = val;
+			}
+
+			var osc1 = new Pizzicato.Sound({ 
+		        source: 'wave',
+		        options: { type: 'sawtooth', frequency: freq1, volume: 1}
+			});
+			var osc2 = new Pizzicato.Sound({ 
+		        source: 'wave',
+		        options: { type: 'sawtooth', frequency: freq2, volume: 1}
+			});
+			var osc3 = new Pizzicato.Sound({ 
+		        source: 'wave',
+		        options: { type: 'sawtooth', frequency: freq3, volume: 1}
+			});
+			var osc4 = new Pizzicato.Sound({ 
+		        source: 'wave',
+		        options: { type: 'sawtooth', frequency: freq4, volume: 1}
+			});
+			var osc5 = new Pizzicato.Sound({ 
+		        source: 'wave',
+		        options: { type: 'sawtooth', frequency: freq5, volume: 1}
+			});
+			var osc6 = new Pizzicato.Sound({ 
+		        source: 'wave',
+		        options: { type: 'sawtooth', frequency: freq6, volume: 1}
+			});
+			
+			var group1 = new Pizzicato.Group([osc1, osc2, osc3, osc4, osc5, osc6]);
+			var oscarr = [osc1, osc2, osc3, osc4, osc5, osc6]
+
+			function onoff(){
+				if (isOn == false){
+					group1.play();
+					document.getElementById("onToggle").innerHTML = "OFF";
+					isOn = true;
+				}
+				else{
+					group1.stop();
+					document.getElementById("onToggle").innerHTML = "ON";
+					isOn = false;
+				}
+			}
+			function FXdelay(){
+				var delay = new Pizzicato.Effects.Delay({
+				    feedback: 0.8,
+				    time: 0.22,
+				    mix: 0.75
+					});
+				group1.addEffect(delay);
+			}
+
+			function FXreverb(){
+				var reverb = new Pizzicato.Effects.Reverb({
+				    time: 1,
+				    decay: 0.8,
+				    reverse: true,
+				    mix: 0.5
+				});
+				group1.addEffect(reverb);
+			}
+
+			/*
+			function FXlowpass(){
+				var lp = new Pizzicato.Effects.LowPassFilter({
+					frequency: 400,
+					peak: 10,
+				});
+				group1.addEffect(lp);
+			}
+			
+			
+
+			var lp = new Pizzicato.Effects.LowPassFilter({
+					frequency: 400,
+					peak: 10,
+				});
+			group1.addEffect(lp);
+
+			function changeFXlowpass(val){
+				//console.log("func fired")
+				console.log(val);
+				lp.frequency = val;
+				console.log(lp.frequency);
+				osc6.frequency = val;
+			}
+			*/
+
+			function tunedown(steps){
+				//console.log(steps);
+				for(ii = 0; ii < steps; ii++){
+					for(i = 0; i < oscarr.length; i++){
+						oscarr[i].frequency = Math.round(oscarr[i].frequency / 1.0595);
+					}	
+				}
+			}
+			function tuneup(steps){
+				for(ii = 0; ii < steps; ii++){
+					for(i = 0; i < oscarr.length; i++){
+						oscarr[i].frequency = Math.round(oscarr[i].frequency * 1.0595);
+					}	
+				}
+			}
+		</script>
+		<style>
+			h2, p, button{
+				font-family: "courier";
+				font-size: 15px;
+			}
+			h1{
+				font-family: "courier";
+				font-size: 20px;
+				font-style: italic;
+			}
+			body{
+				background-color: #ffff00;
+			}
+			input[type=range]{
+			}
+			#hz{
+				outline-style: solid;
+				width: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="bodywrap">
+		<center><h1>...helloimtheoscarrlator...</h1></center>
+		<center><p><button id="onToggle" onclick="onoff()">ON</button></p></center>
+		<center><p id="hz"><span id = "curval">-</span>hz</p></center>
+		<center>
+		<div class="row1">
+		<input type="range" min="0" max="100" value="100" class ="slider" id="mastervol" oninput="changerow1vol(this.value)">	
+		<input type="range" min="65" max="2093" value="440" class ="slider" id="1" oninput="change1(this.value)">
+		<input type="range" min="65" max="2093" value="440" class ="slider" id="2" oninput="change2(this.value)">
+		<input type="range" min="65" max="2093" value="440" class ="slider" id="3" oninput="change3(this.value)">
+		<input type="range" min="65" max="2093" value="440" class ="slider" id="4" oninput="change4(this.value)">
+		<input type="range" min="65" max="2093" value="440" class ="slider" id="5" oninput="change5(this.value)">
+		<input type="range" min="65" max="2093" value="440" class ="slider" id="6" oninput="change6(this.value)">	
+		</div>
+		</center>
+		<br>
+		<center>
+			<button value="7" onclick="tunedown(this.value)">-7</button> 
+			<button value="6" onclick="tunedown(this.value)">-6</button> 
+			<button value="5" onclick="tunedown(this.value)">-5</button> 
+			<button value="4" onclick="tunedown(this.value)">-4</button> 
+			<button value="3" onclick="tunedown(this.value)">-3</button> 
+			<button value="2" onclick="tunedown(this.value)">-2</button> 
+			<button value="1" onclick="tunedown(this.value)">-1</button> <span style="font-family: courier;">()</span> 
+			<button value="1" onclick="tuneup(this.value)">+1</button> 
+			<button value="2" onclick="tuneup(this.value)">+2</button> 
+			<button value="3" onclick="tuneup(this.value)">+3</button> 
+			<button value="4" onclick="tuneup(this.value)">+4</button> 
+			<button value="5" onclick="tuneup(this.value)">+5</button> 
+			<button value="6" onclick="tuneup(this.value)">+6</button> 
+			<button value="7" onclick="tuneup(this.value)">+7</button> 
+			<br>
+		</center>
+		<br>
+		<center>
+			<button onclick="FXdelay()" id="delayToggle">delay</button> 
+			<button onclick="FXreverb()" id="delayToggle" disabled>reverb</button><br>
+	 	</center>
+		</div>
+		<br><br>
+		<pre>
+		TODO
+		- try add and remove delay per osc instead of group
+		- delay > more delay > delay off
+		- gliss prototype 1osc
+		- add gliss to tuner
+		- randomise interval changes (controls for likelihood of change)
+		- free row tuner
+		- label toggle
+		- try array of oscs and iterate through with id for simpler osc control
+		- low pass filter
+		- credits and links
+		X row semitone tune
+		X on off toggle state
+		</pre>
+	</body>
+</html>
