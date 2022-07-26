@@ -18,6 +18,8 @@
 			var freq12 = 440;
 
 			var isOn = false;
+			var osc1delaystate = 0;
+			var randtunerun = false;
 			
 			function change1(val){
 				osc1.frequency = val;
@@ -157,6 +159,67 @@
 					}	
 				}
 			}
+
+			function randplay(){
+
+				if (randtunerun == true){
+					console.log("randtunerun if loop fired")
+					randtunerun = false;
+					return;
+				}
+
+				randtunerun = true;
+				loopyloop();
+
+				function loopyloop(){
+					console.log("randtunerun fired")
+					//random time to change step between 5 and 10
+					time = (Math.floor(Math.random() * 5) + 6) * 1000;
+					console.log(time);
+					//random step incl no change
+					randsteps = Math.floor(Math.random() * 8);
+					console.log(randsteps);
+					//up or down
+					coinflip = Math.round(Math.random());
+					console.log(coinflip)
+					if (coinflip == 0){
+						tunedown(randsteps);
+						console.log("tunedown");
+						}	
+					else{
+						tuneup(randsteps);
+						console.log("tuneup");
+					}
+					setTimeout(loopyloop, time);
+				}
+
+				/*
+				randtunerun = true;
+				while (randtunerun == true){
+					console.log("randtunerun fired")
+					//random time to change step between 5 and 10
+					time = (Math.floor(Math.random() * 5) + 6) * 1000;
+					console.log(time);
+					//random step incl no change
+					randsteps = Math.floor(Math.random() * 8);
+					console.log(randsteps);
+					//up or down
+					coinflip = Math.round(Math.random());
+					console.log(coinflip)
+					//count time and change
+					setTimeout(() => {
+					  	console.log("timeout running")
+					  	if (coinflip == 0){
+							tunedown(randsteps);
+						}	
+						else{
+							tuneup(randsteps);
+						}
+					}, 5000)
+				debugger;
+				}
+				*/
+			}
 		</script>
 		<style>
 			h2, p, button{
@@ -181,7 +244,7 @@
 	</head>
 	<body>
 		<div id="bodywrap">
-		<center><h1>...helloimtheoscarrlator...</h1></center>
+		<center><h1>OSCARR<br>... the oscillator ...</h1></center>
 		<center><p><button id="onToggle" onclick="onoff()">ON</button></p></center>
 		<center><p id="hz"><span id = "curval">-</span>hz</p></center>
 		<center>
@@ -216,17 +279,19 @@
 		<br>
 		<center>
 			<button onclick="FXdelay()" id="delayToggle">delay</button> 
-			<button onclick="FXreverb()" id="delayToggle" disabled>reverb</button><br>
+			<button onclick="FXreverb()" id="delayToggle" disabled>reverb</button><br><br>
+			<button onclick="randplay()">random play</button>
 	 	</center>
 		</div>
 		<br><br>
 		<pre>
 		TODO
 		- try add and remove delay per osc instead of group
+		- randomise interval changes (controls for likelihood of change)
+		- randomise interval changes locked to scale
 		- delay > more delay > delay off
 		- gliss prototype 1osc
 		- add gliss to tuner
-		- randomise interval changes (controls for likelihood of change)
 		- free row tuner
 		- label toggle
 		- try array of oscs and iterate through with id for simpler osc control
