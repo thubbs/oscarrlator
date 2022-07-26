@@ -1,6 +1,7 @@
 <html>
 	<head>
-		<title>haha oscillator go bzzt</title>
+		<meta name="robots" content="noindex">
+		<title>oscarr the oscillator</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.js"></script>
 		<script>
 
@@ -160,6 +161,15 @@
 				}
 			}
 
+			function chaos(){
+				x = (Math.floor(Math.random() * oscarr.length) + 1);
+				y = (Math.floor(Math.random() * 2028) + 65);
+				console.log(y);
+				oscarr[x-1].frequency = y;
+				document.getElementById(x).value = y;
+				setTimeout(chaos, 500);
+			}
+
 			function randplay(){
 
 				if (randtunerun == true){
@@ -254,12 +264,17 @@
 			<button onclick="FXdelay()" id="delayToggle">delay</button> 
 			<button onclick="FXreverb()" id="delayToggle" disabled>reverb</button><br><br>
 			<button onclick="randplay()">rand</button>
-			<button onclick="randplay()" disabled>rand minor</button>
+			<button onclick="randplay()" disabled>rand minor</button><br><br>
+			<button onclick="chaos()" title="best enjoyed with delay">chaos</button>
+			<button onclick="chaosCm()" disabled title="best enjoyed with delay">chaos minor</button>
 	 	</center>
 		</div>
 		<br><br>
 		<pre>
 		TODO
+		- chaos mode for C minor - array of Cm frequencies + random osc + random time?
+		- update tuneup and tunedown sliders with frequencies
+		- oscillator drift
 		- try add and remove delay per osc instead of group
 		- add rand controls for time of change
 		- randomise interval changes locked to scale
@@ -271,6 +286,7 @@
 		- try array of oscs and iterate through with id for simpler osc control
 		- low pass filter
 		- credits and links
+		X chaos button to randomly change oscillator frequencies every 0.5 seconds and update sliders
 		X row semitone tune
 		X on off toggle state
 		</pre>
