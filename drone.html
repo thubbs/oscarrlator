@@ -173,8 +173,8 @@
 
 				function loopyloop(){
 					console.log("randtunerun fired")
-					//random time to change step between 5 and 10
-					time = (Math.floor(Math.random() * 5) + 6) * 1000;
+					//random time to change step between 2 and 5
+					time = (Math.floor(Math.random() * 4) + 2) * 1000;
 					console.log(time);
 					//random step incl no change
 					randsteps = Math.floor(Math.random() * 8);
@@ -192,33 +192,6 @@
 					}
 					setTimeout(loopyloop, time);
 				}
-
-				/*
-				randtunerun = true;
-				while (randtunerun == true){
-					console.log("randtunerun fired")
-					//random time to change step between 5 and 10
-					time = (Math.floor(Math.random() * 5) + 6) * 1000;
-					console.log(time);
-					//random step incl no change
-					randsteps = Math.floor(Math.random() * 8);
-					console.log(randsteps);
-					//up or down
-					coinflip = Math.round(Math.random());
-					console.log(coinflip)
-					//count time and change
-					setTimeout(() => {
-					  	console.log("timeout running")
-					  	if (coinflip == 0){
-							tunedown(randsteps);
-						}	
-						else{
-							tuneup(randsteps);
-						}
-					}, 5000)
-				debugger;
-				}
-				*/
 			}
 		</script>
 		<style>
@@ -280,14 +253,15 @@
 		<center>
 			<button onclick="FXdelay()" id="delayToggle">delay</button> 
 			<button onclick="FXreverb()" id="delayToggle" disabled>reverb</button><br><br>
-			<button onclick="randplay()">random play</button>
+			<button onclick="randplay()">rand</button>
+			<button onclick="randplay()" disabled>rand minor</button>
 	 	</center>
 		</div>
 		<br><br>
 		<pre>
 		TODO
 		- try add and remove delay per osc instead of group
-		- randomise interval changes (controls for likelihood of change)
+		- add rand controls for time of change
 		- randomise interval changes locked to scale
 		- delay > more delay > delay off
 		- gliss prototype 1osc
