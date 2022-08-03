@@ -17,6 +17,8 @@
 			var freq10 = 440;
 			var freq11 = 440;
 			var freq12 = 440;
+			var Cmfreqs = [65, 73, 78, 87, 98, 104, 117, 131, 147, 156, 175, 196, 208, 233, 262, 294, 311, 349, 392, 415, 466, 523];
+			//var Cmfreqs = [65, 73, 78, 87, 98, 104, 117, 131, 147, 156, 175, 196, 208, 233, 262, 294, 311, 349, 392, 415, 466, 523, 587, 622, 698, 784, 831, 932, 1047, 1175, 1245, 1397, 1568, 1661, 1865, 2093];
 
 			var isOn = false;
 			var osc1delaystate = 0;
@@ -92,14 +94,20 @@
 				if (isOn == false){
 					group1.play();
 					document.getElementById("onToggle").innerHTML = "OFF";
+					document.getElementById("panic").disabled = false;
 					isOn = true;
 				}
 				else{
 					group1.stop();
 					document.getElementById("onToggle").innerHTML = "ON";
+					document.getElementById("panic").disabled = true;
 					isOn = false;
 				}
 			}
+			function panic(){
+				window.location.reload();
+			}
+
 			function FXdelay(){
 				var delay = new Pizzicato.Effects.Delay({
 				    feedback: 0.8,
@@ -113,10 +121,11 @@
 				var reverb = new Pizzicato.Effects.Reverb({
 				    time: 1,
 				    decay: 0.8,
-				    reverse: true,
-				    mix: 0.5
-				});
+				    reverse: false,
+				    mix: 1
+					});
 				group1.addEffect(reverb);
+				console.log("reverb on");
 			}
 
 			/*
@@ -168,6 +177,15 @@
 				oscarr[x-1].frequency = y;
 				document.getElementById(x).value = y;
 				setTimeout(chaos, 500);
+			}
+
+			function chaosCm(){
+				x = (Math.floor(Math.random() * oscarr.length) + 1);
+				y = (Math.floor(Math.random() * Cmfreqs.length));
+				console.log(Cmfreqs[y]);
+				oscarr[x-1].frequency = Cmfreqs[y];
+				document.getElementById(x).value = Cmfreqs[y];
+				setTimeout(chaosCm, 1000);
 			}
 
 			function randplay(){
@@ -228,7 +246,7 @@
 	<body>
 		<div id="bodywrap">
 		<center><h1>OSCARR<br>... the oscillator ...</h1></center>
-		<center><p><button id="onToggle" onclick="onoff()">ON</button></p></center>
+		<center><button id="onToggle" onclick="onoff()">ON</button> <button id="panic" onclick="panic()" disabled>PANIC</button></center>
 		<center><p id="hz"><span id = "curval">-</span>hz</p></center>
 		<center>
 		<div class="row1">
@@ -262,17 +280,19 @@
 		<br>
 		<center>
 			<button onclick="FXdelay()" id="delayToggle">delay</button> 
-			<button onclick="FXreverb()" id="delayToggle" disabled>reverb</button><br><br>
+			<button onclick="FXreverb()" id="delayToggle">reverb</button><br><br>
 			<button onclick="randplay()">rand</button>
 			<button onclick="randplay()" disabled>rand minor</button><br><br>
 			<button onclick="chaos()" title="best enjoyed with delay">chaos</button>
-			<button onclick="chaosCm()" disabled title="best enjoyed with delay">chaos minor</button>
+			<button onclick="chaosCm()"  title="best enjoyed with delay">chaos minor</button>
 	 	</center>
 		</div>
 		<br><br>
 		<pre>
 		TODO
+		- pan 3L 3R
 		- chaos mode for C minor - array of Cm frequencies + random osc + random time?
+		- tunedown/up logic wrong way. should be iterate though oscillators > do maths * steps > then set freq once > move on to next osc
 		- update tuneup and tunedown sliders with frequencies
 		- oscillator drift
 		- try add and remove delay per osc instead of group
@@ -285,7 +305,9 @@
 		- label toggle
 		- try array of oscs and iterate through with id for simpler osc control
 		- low pass filter
+		- manual hidden by default
 		- credits and links
+		X panic button
 		X chaos button to randomly change oscillator frequencies every 0.5 seconds and update sliders
 		X row semitone tune
 		X on off toggle state
