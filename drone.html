@@ -5,18 +5,18 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.js"></script>
 		<script>
 
-			var freq1 = 440;
-			var freq2 = 440;
-			var freq3 = 440;
-			var freq4 = 440;
-			var freq5 = 440;
-			var freq6 = 440;
-			var freq7 = 440;
-			var freq8 = 440;
-			var freq9 = 440;
-			var freq10 = 440;
-			var freq11 = 440;
-			var freq12 = 440;
+			var freq1 = 262;
+			var freq2 = 262;
+			var freq3 = 262;
+			var freq4 = 262;
+			var freq5 = 262;
+			var freq6 = 262;
+			var freq7 = 262;
+			var freq8 = 262;
+			var freq9 = 262;
+			var freq10 = 262;
+			var freq11 = 262;
+			var freq12 = 262;
 			var Cmfreqs = [65, 73, 78, 87, 98, 104, 117, 131, 147, 156, 175, 196, 208, 233, 262, 294, 311, 349, 392, 415, 466, 523];
 			//var Cmfreqs = [65, 73, 78, 87, 98, 104, 117, 131, 147, 156, 175, 196, 208, 233, 262, 294, 311, 349, 392, 415, 466, 523, 587, 622, 698, 784, 831, 932, 1047, 1175, 1245, 1397, 1568, 1661, 1865, 2093];
 
@@ -64,27 +64,27 @@
 
 			var osc1 = new Pizzicato.Sound({ 
 		        source: 'wave',
-		        options: { type: 'sawtooth', frequency: freq1, volume: 1}
+		        options: { type: 'sawtooth', frequency: freq1, volume: 0.1}
 			});
 			var osc2 = new Pizzicato.Sound({ 
 		        source: 'wave',
-		        options: { type: 'sawtooth', frequency: freq2, volume: 1}
+		        options: { type: 'sawtooth', frequency: freq2, volume: 0.1}
 			});
 			var osc3 = new Pizzicato.Sound({ 
 		        source: 'wave',
-		        options: { type: 'sawtooth', frequency: freq3, volume: 1}
+		        options: { type: 'sawtooth', frequency: freq3, volume: 0.1}
 			});
 			var osc4 = new Pizzicato.Sound({ 
 		        source: 'wave',
-		        options: { type: 'sawtooth', frequency: freq4, volume: 1}
+		        options: { type: 'sawtooth', frequency: freq4, volume: 0.1}
 			});
 			var osc5 = new Pizzicato.Sound({ 
 		        source: 'wave',
-		        options: { type: 'sawtooth', frequency: freq5, volume: 1}
+		        options: { type: 'sawtooth', frequency: freq5, volume: 0.1}
 			});
 			var osc6 = new Pizzicato.Sound({ 
 		        source: 'wave',
-		        options: { type: 'sawtooth', frequency: freq6, volume: 1}
+		        options: { type: 'sawtooth', frequency: freq6, volume: 0.1}
 			});
 			
 			var group1 = new Pizzicato.Group([osc1, osc2, osc3, osc4, osc5, osc6]);
@@ -93,6 +93,7 @@
 			function onoff(){
 				if (isOn == false){
 					group1.play();
+					group1.volume = 0.1;
 					document.getElementById("onToggle").innerHTML = "OFF";
 					document.getElementById("panic").disabled = false;
 					isOn = true;
@@ -128,17 +129,16 @@
 				console.log("reverb on");
 			}
 
-			/*
 			function FXlowpass(){
 				var lp = new Pizzicato.Effects.LowPassFilter({
-					frequency: 400,
+					frequency: 2000,
 					peak: 10,
 				});
 				group1.addEffect(lp);
 			}
 			
 			
-
+			/*
 			var lp = new Pizzicato.Effects.LowPassFilter({
 					frequency: 400,
 					peak: 10,
@@ -221,6 +221,25 @@
 					setTimeout(loopyloop, time);
 				}
 			}
+
+			function backlogToggle(){
+				var div1 = document.getElementById("backlog");
+				  if (div1.style.display != 'block') {
+				    div1.style.display = 'block';
+				  }
+				  else {
+				    div1.style.display = 'none';
+				  }
+			}
+			function infoToggle(){
+				var x = document.getElementById("info");
+				  if (x.style.display === "none") {
+				    x.style.display = "block";
+				  }
+				  else {
+				    x.style.display = "none";
+				  }
+			}
 		</script>
 		<style>
 			h2, p, button{
@@ -241,22 +260,29 @@
 				outline-style: solid;
 				width: 100px;
 			}
+			#backlog{
+				display: none;
+			}
+			#info{
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="bodywrap">
 		<center><h1>OSCARR<br>... the oscillator ...</h1></center>
+		<center><p>ALPHA</p></center>
 		<center><button id="onToggle" onclick="onoff()">ON</button> <button id="panic" onclick="panic()" disabled>PANIC</button></center>
 		<center><p id="hz"><span id = "curval">-</span>hz</p></center>
 		<center>
 		<div class="row1">
-		<input type="range" min="0" max="100" value="100" class ="slider" id="mastervol" oninput="changerow1vol(this.value)">	
-		<input type="range" min="65" max="2093" value="440" class ="slider" id="1" oninput="change1(this.value)">
-		<input type="range" min="65" max="2093" value="440" class ="slider" id="2" oninput="change2(this.value)">
-		<input type="range" min="65" max="2093" value="440" class ="slider" id="3" oninput="change3(this.value)">
-		<input type="range" min="65" max="2093" value="440" class ="slider" id="4" oninput="change4(this.value)">
-		<input type="range" min="65" max="2093" value="440" class ="slider" id="5" oninput="change5(this.value)">
-		<input type="range" min="65" max="2093" value="440" class ="slider" id="6" oninput="change6(this.value)">	
+		<input type="range" min="0" max="100" value="10" class ="slider" id="mastervol" oninput="changerow1vol(this.value)">	
+		<input type="range" min="65" max="2093" value="262" class ="slider" id="1" oninput="change1(this.value)">
+		<input type="range" min="65" max="2093" value="262" class ="slider" id="2" oninput="change2(this.value)">
+		<input type="range" min="65" max="2093" value="262" class ="slider" id="3" oninput="change3(this.value)">
+		<input type="range" min="65" max="2093" value="262" class ="slider" id="4" oninput="change4(this.value)">
+		<input type="range" min="65" max="2093" value="262" class ="slider" id="5" oninput="change5(this.value)">
+		<input type="range" min="65" max="2093" value="262" class ="slider" id="6" oninput="change6(this.value)">	
 		</div>
 		</center>
 		<br>
@@ -280,16 +306,19 @@
 		<br>
 		<center>
 			<button onclick="FXdelay()" id="delayToggle">delay</button> 
-			<button onclick="FXreverb()" id="delayToggle">reverb</button><br><br>
-			<button onclick="randplay()">rand</button>
-			<button onclick="randplay()" disabled>rand minor</button><br><br>
-			<button onclick="chaos()" title="best enjoyed with delay">chaos</button>
-			<button onclick="chaosCm()"  title="best enjoyed with delay">chaos minor</button>
+			<button onclick="FXreverb()" id="delayToggle">reverb</button>
+			<button onclick="FXlowpass()">LP 2k</button><br><br>
+			<button onclick="randplay()">rand chromatic</button>
+			<button onclick="chaosCm()">rand minor</button><br><br>
+			<button onclick="chaos()" title="best enjoyed with delay">chaos</button><br><br>
+			
 	 	</center>
 		</div>
-		<br><br>
+		<br><br><br>
+		<center><button onclick="backlogToggle()">backlog</button> <button onclick="infoToggle()">info</button> <button onclick="location.href='https://github.com/thubbs/'" type="button">github</button></center>
+		<div id="backlog">
 		<pre>
-		TODO
+		- rand mode w/user inputs for rate of change, likelihood ratio of bass to treble change
 		- pan 3L 3R
 		- chaos mode for C minor - array of Cm frequencies + random osc + random time?
 		- tunedown/up logic wrong way. should be iterate though oscillators > do maths * steps > then set freq once > move on to next osc
@@ -304,13 +333,25 @@
 		- free row tuner
 		- label toggle
 		- try array of oscs and iterate through with id for simpler osc control
-		- low pass filter
+		- dynamic low pass filter
 		- manual hidden by default
 		- credits and links
+		X start at 0.1 vol
+		X start oscs in C
+		X fixed low pass filter
 		X panic button
 		X chaos button to randomly change oscillator frequencies every 0.5 seconds and update sliders
 		X row semitone tune
 		X on off toggle state
 		</pre>
+		</div>
+		<div id="info">
+		<pre>
+		Inspired by Magpie Pedals' Beehive (https://www.magpiepedals.com/shop/product/the-beehive) and built on top of Pizzicato.js (https://alemangui.github.io/pizzicato/),
+		Oscarr the oscillaor (OSCillating ARRay) is a drone instrument made of chewing gum, spaghetti code and outdated HTML tags. But it works. And it's fun. And I like to listen to it.
+
+		Play it. Have it play itself. Push buttons, move sliders, take the code from github, modify it however you like and make it your own.
+		</pre>
+		</div>
 	</body>
 </html>
