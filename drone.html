@@ -233,11 +233,11 @@
 			}
 			function infoToggle(){
 				var x = document.getElementById("info");
-				  if (x.style.display === "none") {
-				    x.style.display = "block";
+				  if (x.style.display != 'block') {
+				    x.style.display = 'block';
 				  }
 				  else {
-				    x.style.display = "none";
+				    x.style.display = 'none';
 				  }
 			}
 		</script>
@@ -271,7 +271,6 @@
 	<body>
 		<div id="bodywrap">
 		<center><h1>OSCARR<br>... the oscillator ...</h1></center>
-		<center><p>ALPHA</p></center>
 		<center><button id="onToggle" onclick="onoff()">ON</button> <button id="panic" onclick="panic()" disabled>PANIC</button></center>
 		<center><p id="hz"><span id = "curval">-</span>hz</p></center>
 		<center>
@@ -315,7 +314,7 @@
 	 	</center>
 		</div>
 		<br><br><br>
-		<center><button onclick="backlogToggle()">backlog</button> <button onclick="infoToggle()">info</button> <button onclick="location.href='https://github.com/thubbs/'" type="button">github</button></center>
+		<center><button onclick="backlogToggle()">backlog</button> <button onclick="infoToggle()">info</button> <button onclick="location.href='https://github.com/thubbs/oscarrlator'" type="button">github</button></center>
 		<div id="backlog">
 		<pre>
 		- rand mode w/user inputs for rate of change, likelihood ratio of bass to treble change
