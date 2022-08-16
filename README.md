@@ -6,3 +6,13 @@ Play it. Have it play itself. Push buttons, move sliders, take the code from git
 
 ## Building your own and making modifications
 It's a one page, semi-structured melange of deprecated html, unscalable CSS and mostly unCamelCased JS. Do your worst.
+
+## License
+Released under [The Unlicense](https://github.com/thubbs/oscarrlator/blob/main/LICENSE).
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
