@@ -7,6 +7,9 @@ Play it. Have it play itself. Push buttons, move sliders, take the code from git
 ## Building your own and making modifications
 It's a one page, semi-structured melange of deprecated html, unscalable CSS and mostly unCamelCased JS. Do your worst.
 
+## Demo
+[Play with Oscarr](https://www.tomhubbardgreen.co.uk/oscarr/index.html)
+
 ## License
 Released under [The Unlicense](https://github.com/thubbs/oscarrlator/blob/main/LICENSE).
 
