@@ -2,6 +2,9 @@
 	<head>
 		<title>oscarr the oscillator</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Just+Me+Again+Down+Here&family=Megrim&family=Permanent+Marker&display=swap" rel="stylesheet"> 
 		<script>
 
 			var freq1 = 262;
@@ -122,20 +125,28 @@
 				    time: 1,
 				    decay: 0.8,
 				    reverse: false,
-				    mix: 1
+				    mix: 0.5
 					});
 				group1.addEffect(reverb);
-				console.log("reverb on");
+				//console.log("reverb on");
 			}
 
 			function FXlowpass(){
 				var lp = new Pizzicato.Effects.LowPassFilter({
-					frequency: 2000,
+					frequency: 3000,
 					peak: 10,
 				});
 				group1.addEffect(lp);
 			}
 			
+			function FXcompressor(){
+				var compressor = new Pizzicato.Effects.Compressor({
+					threshold: -60,
+					ratio: 15,
+					mix: 1
+				});
+				group1.addEffect(compressor);
+			}
 			
 			/*
 			var lp = new Pizzicato.Effects.LowPassFilter({
@@ -172,7 +183,7 @@
 			function chaos(){
 				x = (Math.floor(Math.random() * oscarr.length) + 1);
 				y = (Math.floor(Math.random() * 2028) + 65);
-				console.log(y);
+				//console.log(y);
 				oscarr[x-1].frequency = y;
 				document.getElementById(x).value = y;
 				setTimeout(chaos, 500);
@@ -181,7 +192,7 @@
 			function chaosCm(){
 				x = (Math.floor(Math.random() * oscarr.length) + 1);
 				y = (Math.floor(Math.random() * Cmfreqs.length));
-				console.log(Cmfreqs[y]);
+				//console.log(Cmfreqs[y]);
 				oscarr[x-1].frequency = Cmfreqs[y];
 				document.getElementById(x).value = Cmfreqs[y];
 				setTimeout(chaosCm, 1000);
@@ -239,6 +250,28 @@
 				    x.style.display = 'none';
 				  }
 			}
+
+			function lightsout(val){
+				if (val == "dark"){
+					document.body.style.backgroundColor = "#414141";
+					document.getElementById("h1").style.color = "#ffffff";
+					document.getElementById("hz").style.color = "#ffffff";
+					document.getElementById("sigur").style.color = "#ffffff";
+					document.getElementById("belowtheline").style.color = "#ffffff";
+					document.getElementById("lightsoutbutton").value = "light";
+					document.getElementById("lightsoutbutton").innerHTML = "light mode";
+				}
+				else {
+					document.body.style.backgroundColor = "#ffff00";
+					document.getElementById("h1").style.color = "#000000";
+					document.getElementById("hz").style.color = "#000000";
+					document.getElementById("sigur").style.color = "#000000";
+					document.getElementById("belowtheline").style.color = "#000000";
+					document.getElementById("lightsoutbutton").value = "dark";
+					document.getElementById("lightsoutbutton").innerHTML = "dork mode";
+				}
+				
+			}
 		</script>
 		<style>
 			h2, p, button{
@@ -246,9 +279,9 @@
 				font-size: 15px;
 			}
 			h1{
-				font-family: "courier";
-				font-size: 20px;
-				font-style: italic;
+				font-family: 'Permanent Marker', cursive;
+				font-size: 30px;
+				
 			}
 			body{
 				background-color: #ffff00;
@@ -269,7 +302,7 @@
 	</head>
 	<body>
 		<div id="bodywrap">
-		<center><h1>OSCARR<br>... the oscillator ...</h1></center>
+		<center><h1 id="h1">OSCARR<br>... the oscillator ...</h1></center>
 		<center><button id="onToggle" onclick="onoff()">ON</button> <button id="panic" onclick="panic()" disabled>PANIC</button></center>
 		<center><p id="hz"><span id = "curval">-</span>hz</p></center>
 		<center>
@@ -291,7 +324,7 @@
 			<button value="4" onclick="tunedown(this.value)">-4</button> 
 			<button value="3" onclick="tunedown(this.value)">-3</button> 
 			<button value="2" onclick="tunedown(this.value)">-2</button> 
-			<button value="1" onclick="tunedown(this.value)">-1</button> <span style="font-family: courier;">()</span> 
+			<button value="1" onclick="tunedown(this.value)">-1</button> <span style="font-family: courier;" id="sigur">()</span> 
 			<button value="1" onclick="tuneup(this.value)">+1</button> 
 			<button value="2" onclick="tuneup(this.value)">+2</button> 
 			<button value="3" onclick="tuneup(this.value)">+3</button> 
@@ -305,51 +338,54 @@
 		<center>
 			<button onclick="FXdelay()" id="delayToggle">delay</button> 
 			<button onclick="FXreverb()" id="delayToggle">reverb</button>
-			<button onclick="FXlowpass()">LP 2k</button><br><br>
-			<button onclick="randplay()">rand chromatic</button>
-			<button onclick="chaosCm()">rand minor</button><br><br>
-			<button onclick="chaos()" title="best enjoyed with delay">chaos</button><br><br>
-			
+			<button onclick="FXlowpass()">LP 3k</button>
+			<button onclick="FXcompressor()">compressor</button><br><br>
+			<button onclick="chaosCm()">rand diatonic</button>
+			<button onclick="randplay()">rand chromatic</button><br><br>
+			<button onclick="chaos()" title="best enjoyed with delay"><span style="font-family: 'Megrim', cursive;">chaos</span></button><br><br>
 	 	</center>
 		</div>
 		<br><br><br>
-		<center><button onclick="backlogToggle()">backlog</button> <button onclick="infoToggle()">info</button> <button onclick="location.href='https://github.com/thubbs/oscarrlator'" type="button">github</button></center>
-		<div id="backlog">
-		<pre>
-		- rand mode w/user inputs for rate of change, likelihood ratio of bass to treble change
-		- pan 3L 3R
-		- chaos mode for C minor - array of Cm frequencies + random osc + random time?
-		- tunedown/up logic wrong way. should be iterate though oscillators > do maths * steps > then set freq once > move on to next osc
-		- update tuneup and tunedown sliders with frequencies
-		- oscillator drift
-		- try add and remove delay per osc instead of group
-		- add rand controls for time of change
-		- randomise interval changes locked to scale
-		- delay > more delay > delay off
-		- gliss prototype 1osc
-		- add gliss to tuner
-		- free row tuner
-		- label toggle
-		- try array of oscs and iterate through with id for simpler osc control
-		- dynamic low pass filter
-		- manual hidden by default
-		- credits and links
-		X start at 0.1 vol
-		X start oscs in C
-		X fixed low pass filter
-		X panic button
-		X chaos button to randomly change oscillator frequencies every 0.5 seconds and update sliders
-		X row semitone tune
-		X on off toggle state
-		</pre>
-		</div>
-		<div id="info">
-		<pre>
-		Inspired by Magpie Pedals' Beehive (https://www.magpiepedals.com/shop/product/the-beehive) and built on top of Pizzicato.js (https://alemangui.github.io/pizzicato/),
-		Oscarr the oscillator (OSCillating ARRay) is a drone instrument made of chewing gum, spaghetti code and outdated HTML tags. But it works. And it's fun. And I like to listen to it.
-
-		Play it. Have it play itself. Push buttons, move sliders, take the code from github, modify it however you like and make it your own.
-		</pre>
+		<center><button id="lightsoutbutton" onclick="lightsout(this.value)" value="dark">dark mode</button> <button onclick="backlogToggle()">backlog</button> <button onclick="infoToggle()">info</button> <button onclick="location.href='https://github.com/thubbs/oscarrlator'" type="button">github</button></center>
+		<div id="belowtheline" width="100%">
+			<div id="backlog">
+			<pre>
+			- add compressor to output
+			- rand mode w/user inputs for rate of change, likelihood ratio of bass to treble change
+			- responsive design	
+			- pan 3L 3R
+			- chaos mode for C minor - array of Cm frequencies + random osc + random time?
+			- tunedown/up logic wrong way. should be iterate though oscillators > do maths * steps > then set freq once > move on to next osc
+			- update tuneup and tunedown sliders with frequencies
+			- oscillator drift
+			- try add and remove delay per osc instead of group
+			- add rand controls for time of change
+			- randomise interval changes locked to scale
+			- delay > more delay > delay off
+			- gliss prototype 1osc
+			- add gliss to tuner
+			- free row tuner
+			- label toggle
+			- try array of oscs and iterate through with id for simpler osc control
+			- dynamic low pass filter
+			- manual hidden by default
+			- credits and links
+			X night mode
+			X start at 0.1 vol
+			X start oscs in C
+			X fixed low pass filter
+			X panic button
+			X chaos button to randomly change oscillator frequencies every 0.5 seconds and update sliders
+			X row semitone tune
+			X on off toggle state
+			</pre>
+			</div>
+			<div id="info">
+			<p>
+			Inspired by Magpie Pedals' Beehive (https://www.magpiepedals.com/shop/product/the-beehive) and built on top of Pizzicato.js (https://alemangui.github.io/pizzicato/), Oscarr the oscillator (OSCillating ARRay) is a drone instrument made of chewing gum, spaghetti code and outdated HTML tags. But it works. And it's fun. And I like to listen to it.</p>
+			<p>
+			Play it. Have it play itself. Push buttons, move sliders, take the code from github, modify it however you like and make it your own.</p>
+			</div>
 		</div>
 	</body>
 </html>
