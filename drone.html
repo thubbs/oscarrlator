@@ -19,7 +19,8 @@
 			var freq10 = 262;
 			var freq11 = 262;
 			var freq12 = 262;
-			var Cmfreqs = [65, 73, 78, 87, 98, 104, 117, 131, 147, 156, 175, 196, 208, 233, 262, 294, 311, 349, 392, 415, 466, 523];
+			var Cmfreqs = [65, 73, 78, 87, 98, 104, 117, 131, 147, 156, 175, 196, 208, 233, 262, 294, 311, 349, 392, 415, 466, 523, 587, 622, 698, 784, 831, 932, 1047];
+			var Cmajfreqs = [65, 73, 82, 87, 98, 110, 123, 131, 147, 165, 175, 196, 220, 247, 262, 294, 330, 349, 392, 440, 494, 523, 587, 659, 698, 784, 880, 988, 1047];
 			//var Cmfreqs = [65, 73, 78, 87, 98, 104, 117, 131, 147, 156, 175, 196, 208, 233, 262, 294, 311, 349, 392, 415, 466, 523, 587, 622, 698, 784, 831, 932, 1047, 1175, 1245, 1397, 1568, 1661, 1865, 2093];
 
 			var isOn = false;
@@ -103,11 +104,12 @@
 				else{
 					group1.stop();
 					document.getElementById("onToggle").innerHTML = "ON";
-					document.getElementById("panic").disabled = true;
+					//document.getElementById("panic").disabled = true;
 					isOn = false;
 				}
 			}
 			function panic(){
+				document.getElementById("panic").disabled = true;
 				window.location.reload();
 			}
 
@@ -147,28 +149,41 @@
 				});
 				group1.addEffect(compressor);
 			}
-			
-			/*
-			var lp = new Pizzicato.Effects.LowPassFilter({
-					frequency: 400,
-					peak: 10,
-				});
-			group1.addEffect(lp);
 
-			function changeFXlowpass(val){
-				//console.log("func fired")
-				console.log(val);
-				lp.frequency = val;
-				console.log(lp.frequency);
-				osc6.frequency = val;
+			function FXdist(){
+				var distortion = new Pizzicato.Effects.Distortion({
+			    gain: 0.5
+				});
+
+				group1.addEffect(distortion);
 			}
-			*/
+			
+			function FXstereo(){
+				document.getElementById("stereoToggle").disabled = true;
+				//extpan = -1;
+				extpan = [-1, 1, -0.6, 0.6, -0.2, 0.2];
+				
+				for(i = 0; i < oscarr.length; i++){
+						var stereoPanner = new Pizzicato.Effects.StereoPanner({
+				    		pan: extpan[i]
+						});
+						//console.log(extpan);
+						oscarr[i].addEffect(stereoPanner);
+						//extpan = extpan + 0.4;
+					}
+			}
+
+			function rand(val){
+				x = (Math.floor(Math.random() * val) + 1)
+				return x;
+			}
 
 			function tunedown(steps){
 				//console.log(steps);
 				for(ii = 0; ii < steps; ii++){
 					for(i = 0; i < oscarr.length; i++){
 						oscarr[i].frequency = Math.round(oscarr[i].frequency / 1.0595);
+						document.getElementById(i+1).value = oscarr[i].frequency;
 					}	
 				}
 			}
@@ -176,6 +191,7 @@
 				for(ii = 0; ii < steps; ii++){
 					for(i = 0; i < oscarr.length; i++){
 						oscarr[i].frequency = Math.round(oscarr[i].frequency * 1.0595);
+						document.getElementById(i+1).value = oscarr[i].frequency;
 					}	
 				}
 			}
@@ -192,7 +208,7 @@
 			function chaosCm(){
 				x = (Math.floor(Math.random() * oscarr.length) + 1);
 				y = (Math.floor(Math.random() * Cmfreqs.length));
-				//console.log(Cmfreqs[y]);
+				console.log(Cmfreqs[y]);
 				oscarr[x-1].frequency = Cmfreqs[y];
 				document.getElementById(x).value = Cmfreqs[y];
 				setTimeout(chaosCm, 1000);
@@ -211,7 +227,7 @@
 
 				function loopyloop(){
 					console.log("randtunerun fired")
-					//random time to change step between 2 and 5
+					//random time to change step between 2s and 5s
 					time = (Math.floor(Math.random() * 4) + 2) * 1000;
 					console.log(time);
 					//random step incl no change
@@ -306,18 +322,19 @@
 		<center><button id="onToggle" onclick="onoff()">ON</button> <button id="panic" onclick="panic()" disabled>PANIC</button></center>
 		<center><p id="hz"><span id = "curval">-</span>hz</p></center>
 		<center>
-		<div class="row1">
-		<input type="range" min="0" max="100" value="10" class ="slider" id="mastervol" oninput="changerow1vol(this.value)">	
-		<input type="range" min="65" max="2093" value="262" class ="slider" id="1" oninput="change1(this.value)">
-		<input type="range" min="65" max="2093" value="262" class ="slider" id="2" oninput="change2(this.value)">
-		<input type="range" min="65" max="2093" value="262" class ="slider" id="3" oninput="change3(this.value)">
-		<input type="range" min="65" max="2093" value="262" class ="slider" id="4" oninput="change4(this.value)">
-		<input type="range" min="65" max="2093" value="262" class ="slider" id="5" oninput="change5(this.value)">
-		<input type="range" min="65" max="2093" value="262" class ="slider" id="6" oninput="change6(this.value)">	
-		</div>
+			<div class="row1">
+				<input type="range" min="0" max="100" value="10" class ="slider" id="mastervol" oninput="changerow1vol(this.value)">	
+				<input type="range" min="65" max="2093" value="262" class ="slider" id="1" oninput="change1(this.value)">
+				<input type="range" min="65" max="2093" value="262" class ="slider" id="2" oninput="change2(this.value)">
+				<input type="range" min="65" max="2093" value="262" class ="slider" id="3" oninput="change3(this.value)">
+				<input type="range" min="65" max="2093" value="262" class ="slider" id="4" oninput="change4(this.value)">
+				<input type="range" min="65" max="2093" value="262" class ="slider" id="5" oninput="change5(this.value)">
+				<input type="range" min="65" max="2093" value="262" class ="slider" id="6" oninput="change6(this.value)">	
+			</div>
 		</center>
 		<br>
 		<center>
+			<button value="12" onclick="tunedown(this.value)">-12</button> 
 			<button value="7" onclick="tunedown(this.value)">-7</button> 
 			<button value="6" onclick="tunedown(this.value)">-6</button> 
 			<button value="5" onclick="tunedown(this.value)">-5</button> 
@@ -332,17 +349,20 @@
 			<button value="5" onclick="tuneup(this.value)">+5</button> 
 			<button value="6" onclick="tuneup(this.value)">+6</button> 
 			<button value="7" onclick="tuneup(this.value)">+7</button> 
+			<button value="12" onclick="tuneup(this.value)">+12</button>
 			<br>
 		</center>
 		<br>
 		<center>
 			<button onclick="FXdelay()" id="delayToggle">delay</button> 
-			<button onclick="FXreverb()" id="delayToggle">reverb</button>
-			<button onclick="FXlowpass()">LP 3k</button>
-			<button onclick="FXcompressor()">compressor</button><br><br>
+			<button onclick="FXreverb()" id="reverbToggle">reverb</button> 
+			<button onclick="FXdist()">distort</button> 
+			<button onclick="FXlowpass()">LP 3k</button> 
+			<button onclick="FXcompressor()">compressor</button> 
+			<button onclick="FXstereo()" id="stereoToggle">stereo</button><br><br>
 			<button onclick="chaosCm()">rand diatonic</button>
 			<button onclick="randplay()">rand chromatic</button><br><br>
-			<button onclick="chaos()" title="best enjoyed with delay"><span style="font-family: 'Megrim', cursive;">chaos</span></button><br><br>
+			<button onclick="chaos()"><span style="font-family: 'Megrim', cursive;">chaos</span></button><br><br>
 	 	</center>
 		</div>
 		<br><br><br>
@@ -350,13 +370,16 @@
 		<div id="belowtheline" width="100%">
 			<div id="backlog">
 			<pre>
+			- bliss mode: upfront random 1) melody change (most likely), 2) bass and melody change at same time, 3) just bass change (least likely)
+			- bliss mode: try pentatonic and phrygian
+			- bliss mode: modified diatonic mode. less likely change in bass notes. keep 1s change > probability favouring melody change > note from appropriate range > probability to change note else no action
+			- timed pulse generator. slider for 0 (off), 60bpm, 120, 240, 480, 960. fixed hz.
 			- add compressor to output
 			- rand mode w/user inputs for rate of change, likelihood ratio of bass to treble change
 			- responsive design	
 			- pan 3L 3R
 			- chaos mode for C minor - array of Cm frequencies + random osc + random time?
 			- tunedown/up logic wrong way. should be iterate though oscillators > do maths * steps > then set freq once > move on to next osc
-			- update tuneup and tunedown sliders with frequencies
 			- oscillator drift
 			- try add and remove delay per osc instead of group
 			- add rand controls for time of change
@@ -368,9 +391,15 @@
 			- label toggle
 			- try array of oscs and iterate through with id for simpler osc control
 			- dynamic low pass filter
-			- manual hidden by default
-			- credits and links
+			X stereo toggle, panning across stereo field [-1, -0.6, -0.2, 0.2, 0.6, 1]
+			X add octave step controls
+			X manual hidden by default
+			X credits and links
+			X update tuneup and tunedown sliders with frequencies
+			X allow panic in all states except first run
+			X distortion toggle effect
 			X night mode
+			-
 			X start at 0.1 vol
 			X start oscs in C
 			X fixed low pass filter
